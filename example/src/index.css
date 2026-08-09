@@ -1,0 +1,45 @@
+/*
+ * La librería trae sus propios tokens y las utilidades que usan sus componentes, así
+ * que aquí no se redeclara nada de eso: solo se importa.
+ */
+@import "nexora-iot-ui/styles.css";
+
+/* Tailwind, para las clases de esta pantalla (rejilla, espaciados, tipografía). */
+@import "tailwindcss";
+
+/*
+ * Las fuentes no viajan en el paquete: inlinearlas metía 400 kB de base64 en la hoja de
+ * estilos. El lenguaje de diseño espera estas dos; cualquier otro par también funciona.
+ */
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
+
+/*
+ * Los valores los pone la librería; esto solo le dice a Tailwind cómo llamarlos, para
+ * poder escribir `bg-background` o `text-muted-foreground` en esta app.
+ */
+@theme inline {
+  --font-sans: "Inter Variable", sans-serif;
+  --font-mono: "JetBrains Mono Variable", monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-border: var(--border);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-lg: var(--radius);
+}
+
+@layer base {
+  html {
+    @apply font-sans;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}

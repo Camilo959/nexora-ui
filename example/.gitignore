@@ -25,5 +25,4 @@ DESIGN.md
 *.sln
 *.sw?
 
-# tarballs de npm pack
-*.tgz
+package-lock.json

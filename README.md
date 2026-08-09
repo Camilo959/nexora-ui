@@ -74,7 +74,10 @@ the look changes. The stylesheet itself is 38 kB (7 kB gzipped).
 
 ## Example: a weather station
 
-The library was built against a real one — an ESP32 with a DHT11 reading temperature
+**Runnable app in [`example/`](example)** — it installs `nexora-iot-ui` from npm like
+anyone else would, so if it works there it works in your project.
+
+The library was built against a real one: an ESP32 with a DHT11 reading temperature
 and humidity every two seconds, and a 28BYJ-48 stepper the panel can start and stop.
 It is the whole point in one screen: readings flowing out of the board, commands
 flowing back in, over a single channel.
@@ -148,8 +151,12 @@ animation:
 - **You bring the chart.** `ConnectedRealtimeChart` hands you the values and stays out
   of your dataviz.
 
-The board side of this example — DHT11 readings, command handling, reconnection — is
-about forty lines of Python. See [`docs/PROTOCOLO.md`](docs/PROTOCOLO.md).
+The board side — DHT11 readings, command handling, reconnection — is about forty lines
+of Python. See [`docs/PROTOCOLO.md`](docs/PROTOCOLO.md).
+
+To run it: `cd example && npm install && npm run dev`, with `demo_server.py` and
+`sim_esp32.py` from [Camilo959/Nexora](https://github.com/Camilo959/Nexora) in two other
+terminals. Full instructions in [`example/README.md`](example/README.md).
 
 ## Components
 
