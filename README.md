@@ -1,13 +1,13 @@
 <img src="assets/nexora.png" alt="Nexora" width="360">
 
-# @nexora/ui
+# nexora-iot-ui
 
 UI component library for IoT / industrial monitoring UIs, built on a
 "Technical Functionalism" design language — plus an optional data layer that
 connects those components to a real device over [Portal](https://useportal.co).
 
 ```bash
-npm install @nexora/ui
+npm install nexora-iot-ui
 ```
 
 ## Stack
@@ -92,8 +92,8 @@ is pending (`appliedValue` matches the current value).
 `react` and `react-dom` (v19) are peer dependencies — you already have them.
 
 ```tsx
-import "@nexora/ui/styles.css"              // tokens + utilities, 38 kB (7 kB gzipped)
-import { TelemetryCard } from "@nexora/ui"
+import "nexora-iot-ui/styles.css"              // tokens + utilities, 38 kB (7 kB gzipped)
+import { TelemetryCard } from "nexora-iot-ui"
 ```
 
 **Fonts are not bundled.** Shipping them inlined added 400 kB of base64 to the stylesheet
@@ -105,22 +105,22 @@ Two entry points, so consumers who only want the components never pull in the tr
 
 | Entry | What you get |
 |---|---|
-| `@nexora/ui` | The nine presentation-only components |
-| `@nexora/ui/portal` | Provider, hooks and connected wrappers (below) |
+| `nexora-iot-ui` | The nine presentation-only components |
+| `nexora-iot-ui/portal` | Provider, hooks and connected wrappers (below) |
 
-## `@nexora/ui/portal` — the optional data layer
+## `nexora-iot-ui/portal` — the optional data layer
 
 The component set above stays presentation-only, forever. `src/portal/` is a **second,
 optional entry point** that connects those components to a real device over
 [Portal](https://useportal.co):
 
 ```
-@nexora/ui          → presentation. No network. No device knowledge.
-@nexora/ui/portal   → transport + hooks + three connected wrappers.
+nexora-iot-ui          → presentation. No network. No device knowledge.
+nexora-iot-ui/portal   → transport + hooks + three connected wrappers.
 ```
 
 ```tsx
-import { PortalDeviceProvider, ConnectedTelemetryCard } from "@nexora/ui/portal"
+import { PortalDeviceProvider, ConnectedTelemetryCard } from "nexora-iot-ui/portal"
 
 <PortalDeviceProvider
   getToken={async () => (await (await fetch("/token")).json()).token}
@@ -204,7 +204,7 @@ npm run preview  # preview the production build
 
 ## Status
 
-The nine IoT components are stable and presentation-only. `@nexora/ui/portal` adds the
+The nine IoT components are stable and presentation-only. `nexora-iot-ui/portal` adds the
 device layer; `GaugeCard`, `RelaySwitch`, `SetpointSlider` and `DeviceTable` have no
 connected wrapper yet — no real use case has asked for one. With `useTelemetry` and
 `useActuator` they connect in four lines.

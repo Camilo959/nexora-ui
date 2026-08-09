@@ -1,6 +1,6 @@
 # El vocabulario
 
-`@nexora/ui/portal` no es un cliente genérico de Portal: espera que el dispositivo hable
+`nexora-iot-ui/portal` no es un cliente genérico de Portal: espera que el dispositivo hable
 un contrato concreto. **Ese contrato es el activo de esta librería** — los hooks son
 cuatrocientas líneas que cualquiera reescribe; lo que hace que una placa nueva funcione
 sin tocar el frontend es esto.
