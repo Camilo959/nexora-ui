@@ -72,6 +72,85 @@ npm i @fontsource-variable/inter @fontsource-variable/jetbrains-mono
 Import them yourself, or serve them however you like. Any other pair still works; only
 the look changes. The stylesheet itself is 38 kB (7 kB gzipped).
 
+## Example: a weather station
+
+The library was built against a real one — an ESP32 with a DHT11 reading temperature
+and humidity every two seconds, and a 28BYJ-48 stepper the panel can start and stop.
+It is the whole point in one screen: readings flowing out of the board, commands
+flowing back in, over a single channel.
+
+```tsx
+import "nexora-iot-ui/styles.css"
+import { StatusBadge, CommandLog } from "nexora-iot-ui"
+import {
+  PortalDeviceProvider, ConnectedTelemetryCard, ConnectedRealtimeChart,
+  ConnectedActuatorButton, useTelemetry, useDeviceLog,
+} from "nexora-iot-ui/portal"
+
+interface Reading {
+  temperature?: number
+  humidity?: number
+  motor_status?: "RUNNING" | "STOPPED"
+}
+
+function Station() {
+  const { latest, status, stale } = useTelemetry<Reading>()
+  const log = useDeviceLog()
+  const running = latest?.motor_status === "RUNNING"
+  const offline = status !== "live" || stale
+
+  return (
+    <main className="space-y-4 p-6">
+      <StatusBadge {...(offline
+        ? { status: "alert", label: "no data" }
+        : { status: "live", label: "live" })} />
+
+      <ConnectedTelemetryCard label="Temperature" metric="temperature" unit="°C" precision={1}
+        status={latest?.temperature != null && latest.temperature > 30 ? "warning" : "normal"} />
+      <ConnectedTelemetryCard label="Humidity" metric="humidity" unit="%" />
+
+      <ConnectedRealtimeChart title="Temperature" unit="°C" metric="temperature">
+        {/* Sparkline is yours — the card only hands you the numbers */}
+        {(values) => <Sparkline values={values} />}
+      </ConnectedRealtimeChart>
+
+      <ConnectedActuatorButton label="Open vent" commandType="MOTOR_COMMAND"
+        action={{ action: "START_MOTOR" }} disabled={offline || running} />
+      <ConnectedActuatorButton label="Close vent" variant="destructive"
+        commandType="MOTOR_COMMAND" action={{ action: "STOP_MOTOR" }}
+        disabled={offline || !running} />
+
+      <CommandLog entries={log} title="EVENTS" />
+    </main>
+  )
+}
+
+export default function App() {
+  return (
+    <PortalDeviceProvider
+      getToken={async () => (await (await fetch("/token")).json()).token}
+      defaultChannelId="device:esp32-01"
+    >
+      <Station />
+    </PortalDeviceProvider>
+  )
+}
+```
+
+Three things worth noticing, because they are the difference between a panel and an
+animation:
+
+- **The buttons read the device, not the click.** `running` comes from the board's own
+  telemetry, so "Open vent" only re-enables once the hardware says it stopped. Pressing
+  a button changes nothing on screen by itself.
+- **`offline` is `status !== "live" || stale`.** The socket being up is not the board
+  being alive; commands are disabled when there is nobody to receive them.
+- **You bring the chart.** `ConnectedRealtimeChart` hands you the values and stays out
+  of your dataviz.
+
+The board side of this example — DHT11 readings, command handling, reconnection — is
+about forty lines of Python. See [`docs/PROTOCOLO.md`](docs/PROTOCOLO.md).
+
 ## Components
 
 Presentation-only, controlled, and accessible: keyboard support on interactive rows,
