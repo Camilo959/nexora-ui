@@ -61,8 +61,11 @@ export function ActuatorButton({
       aria-live="polite"
       onClick={() => onExecute?.()}
       className={cn(
-        "disabled:opacity-100",
-        isExecuting && "bg-muted text-muted-foreground hover:bg-muted",
+        // The dimming override is scoped to `executing`, where the muted background,
+        // spinner and EXECUTING label already carry the state. When the consumer
+        // disables the button, `Button`'s own `disabled:opacity-50` must survive, or a
+        // disabled button is indistinguishable from an active one.
+        isExecuting && "disabled:opacity-100 bg-muted text-muted-foreground hover:bg-muted",
         status === "success" && "bg-emerald-600 text-white hover:bg-emerald-600",
         status === "error" && "bg-red-600 text-white hover:bg-red-600",
         className
