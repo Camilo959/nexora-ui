@@ -1,7 +1,14 @@
-# nexora-ui
+<img src="assets/nexora.png" alt="Nexora" width="360">
+
+# @nexora/ui
 
 UI component library for IoT / industrial monitoring UIs, built on a
-"Technical Functionalism" design language.
+"Technical Functionalism" design language — plus an optional data layer that
+connects those components to a real device over [Portal](https://useportal.co).
+
+```bash
+npm install @nexora/ui
+```
 
 ## Stack
 
@@ -82,15 +89,11 @@ is pending (`appliedValue` matches the current value).
 
 ## Install
 
-```bash
-npm install nexora-ui
-```
-
 `react` and `react-dom` (v19) are peer dependencies — you already have them.
 
 ```tsx
-import "nexora-ui/styles.css"              // tokens + utilities, 38 kB (7 kB gzipped)
-import { TelemetryCard } from "nexora-ui"
+import "@nexora/ui/styles.css"              // tokens + utilities, 38 kB (7 kB gzipped)
+import { TelemetryCard } from "@nexora/ui"
 ```
 
 **Fonts are not bundled.** Shipping them inlined added 400 kB of base64 to the stylesheet
@@ -102,22 +105,22 @@ Two entry points, so consumers who only want the components never pull in the tr
 
 | Entry | What you get |
 |---|---|
-| `nexora-ui` | The nine presentation-only components |
-| `nexora-ui/portal` | Provider, hooks and connected wrappers (below) |
+| `@nexora/ui` | The nine presentation-only components |
+| `@nexora/ui/portal` | Provider, hooks and connected wrappers (below) |
 
-## `nexora-ui/portal` — the optional data layer
+## `@nexora/ui/portal` — the optional data layer
 
 The component set above stays presentation-only, forever. `src/portal/` is a **second,
 optional entry point** that connects those components to a real device over
 [Portal](https://useportal.co):
 
 ```
-nexora-ui          → presentation. No network. No device knowledge.
-nexora-ui/portal   → transport + hooks + three connected wrappers.
+@nexora/ui          → presentation. No network. No device knowledge.
+@nexora/ui/portal   → transport + hooks + three connected wrappers.
 ```
 
 ```tsx
-import { PortalDeviceProvider, ConnectedTelemetryCard } from "nexora-ui/portal"
+import { PortalDeviceProvider, ConnectedTelemetryCard } from "@nexora/ui/portal"
 
 <PortalDeviceProvider
   getToken={async () => (await (await fetch("/token")).json()).token}
@@ -138,9 +141,12 @@ import { PortalDeviceProvider, ConnectedTelemetryCard } from "nexora-ui/portal"
 
 ### The vocabulary
 
-This is the actual asset. Any board that speaks it works with these hooks —
-`portal-hardware/portal_device.py` is the reference implementation for Python boards
-(ESP32, Raspberry Pi, Jetson).
+This is the actual asset — the hooks are four hundred lines anyone could rewrite; the
+contract is what lets a new board work without touching the frontend. Any device that
+speaks it works with these components.
+
+**Full contract, protocol findings and the board-side reference implementation:
+[`docs/PROTOCOLO.md`](docs/PROTOCOLO.md).** The short version:
 
 | Concept | Channel | Transport | `type` | `content` |
 |---|---|---|---|---|
@@ -180,20 +186,28 @@ So `src/portal/channel.ts` implements Portal's wire protocol v1 directly — the
 of `portal_device.py`. When the SDK learns to receive ephemerals, that one file is the only
 thing to replace: the hooks are the seam.
 
+## Docs
+
+| | |
+|---|---|
+| [`docs/PROTOCOLO.md`](docs/PROTOCOLO.md) | The vocabulary in full — message shapes, the four rules, authentication, and what we found probing Portal's undocumented wire protocol |
+| [`DESIGN.md`](DESIGN.md) | The design language: tokens, type scale, spacing, motion |
+
 ## Scripts
 
 ```bash
 npm run dev      # start the Vite dev server
-npm run build    # type-check (tsc -b) + production build
+npm run build    # production build + type declarations
 npm run lint     # ESLint
 npm run preview  # preview the production build
 ```
 
 ## Status
 
-The nine IoT components are stable and presentation-only. `nexora-ui/portal` adds the
+The nine IoT components are stable and presentation-only. `@nexora/ui/portal` adds the
 device layer; `GaugeCard`, `RelaySwitch`, `SetpointSlider` and `DeviceTable` have no
-connected wrapper yet — no real use case has asked for one.
+connected wrapper yet — no real use case has asked for one. With `useTelemetry` and
+`useActuator` they connect in four lines.
 
-`src/portal/` is documented in Spanish, matching the Nexora project it was extracted from;
-the component set stays in English. Worth unifying if this repo is ever published.
+`src/portal/` and `docs/` are written in Spanish, matching the Nexora project this was
+extracted from; the component set stays in English.
