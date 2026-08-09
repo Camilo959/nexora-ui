@@ -1,75 +1,95 @@
-# React + TypeScript + Vite
+# nexora-ui
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+UI component library for IoT / industrial monitoring UIs, built on a
+"Technical Functionalism" design language.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React 19 + TypeScript
+- Vite
+- Tailwind CSS v4 (via `@tailwindcss/vite`)
+- shadcn/ui primitives
+- lucide-react icons
+- `tw-animate-css` for animations
 
-## React Compiler
+## Design language
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Defined as CSS design tokens in `src/index.css`:
 
-## Expanding the ESLint configuration
+- **Semantic colors** — surfaces, brand, supporting, borders and data-viz
+  chart scales are exposed as `--color-*` theme values (see `@theme inline`).
+- **Brand** — dark green primary (`#006948`) on neutral surfaces.
+- **Typography** — Inter Variable (sans) and JetBrains Mono Variable (mono,
+  used for data, IDs, timestamps and technical labels).
+- **Restrained rounding** — `--radius: 0.25rem`.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Architecture
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+All components follow the same contract:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **Presentation-only** — components never talk to hardware, devices,
+  WebSockets, MQTT or REST. Data and connectivity flow in via props.
+- **Controlled** — state lives in the consumer. Components report
+  *intent* through callbacks (`onExecute`, `onCheckedChange`, `onApply`, …)
+  and the consumer drives the resulting state back in.
+- **Accessible** — keyboard support on interactive rows, `role="log"` on the
+  console, `aria-busy` on in-flight actions, and `motion-reduce` guards on
+  all animations.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Components
 
+### `src/components/iot/StatusBadge.tsx`
+Operational state indicator. Presents the state passed in via `status`
+(`"live" | "standby" | "alert" | "offline"`) — never infers it. The `live`
+pulse animation is disabled under `prefers-reduced-motion`; state is always
+conveyed by text as well as color. `label` overrides the visible text while
+keeping the accessible name correctly cased.
+
+### `src/components/iot/DeviceTable.tsx`
+Inventory of IoT devices as a technical table (ID / NAME / STATUS /
+LAST METRIC / LAST SEEN, plus an optional per-row ACTIONS column).
+Presentation-only; `onSelect` makes rows focusable and Enter/Space
+activable, and action buttons are labelled `"<ACTION>, <Device>"`.
+`loading` shows a single loading row; an `emptyLabel` covers the empty
+state.
+
+### `src/components/iot/CommandLog.tsx`
+Technical event/command console. Pure viewer — entries come in through the
+`entries` prop (id, timestamp, message, level, optional source) and the
+consumer owns the data flow. Auto-scroll only sticks to the bottom while
+the user is near the end. Rendered with `role="log"`.
+
+### `src/components/iot/ActuatorButton.tsx`
+One-shot actuator command (START MOTOR, REBOOT NODE, EMERGENCY STOP, …).
+Represents *intent* only: the consumer drives `status`
+(`"idle" | "executing" | "success" | "error"`) and reacts to `onExecute`.
+`executing` disables the button; `success`/`error` stay clickable for retry.
+`variant="destructive"` for actions like EMERGENCY STOP.
+
+### `src/components/iot/RelaySwitch.tsx`
+Binary hardware control (pump, relay, valve). Strictly controlled:
+`checked` always comes from the consumer and every interaction is reported
+via `onCheckedChange`. `loading` marks an in-flight command (blocks the
+switch and shows a pending indicator). Shows an ON/OFF readout.
+
+### `src/components/iot/SetpointSlider.tsx`
+Numeric setpoint editor (motor RPM, temperature limit, PWM, …). Separates
+*selection* (slider → `onValueChange`) from *application* (APPLY SETPOINT
+→ `onApply`). Out-of-range/non-finite values are clamped for rendering and
+application; a degenerate range (`min === max`, NaN bounds) disables the
+slider and blocks application. The APPLY button is disabled while no change
+is pending (`appliedValue` matches the current value).
+
+## Scripts
+
+```bash
+npm run dev      # start the Vite dev server
+npm run build    # type-check (tsc -b) + production build
+npm run lint     # ESLint
+npm run preview  # preview the production build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Status
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+In progress. Only the six IoT components above exist; no device or
+connectivity layer has been added yet.
