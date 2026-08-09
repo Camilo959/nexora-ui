@@ -29,7 +29,7 @@
   ],
   "files": [
     "dist",
-    "docs",
+    "docs/*.md",
     "assets",
     "README.md",
     "DESIGN.md",

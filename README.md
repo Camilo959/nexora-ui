@@ -77,6 +77,10 @@ the look changes. The stylesheet itself is 38 kB (7 kB gzipped).
 **Runnable app in [`example/`](example)** — it installs `nexora-iot-ui` from npm like
 anyone else would, so if it works there it works in your project.
 
+[![The example app running](docs/media/ejemplo.png)](docs/media)
+
+*Live, against a simulated ESP32. Video and more stills in [`docs/media`](docs/media).*
+
 The library was built against a real one: an ESP32 with a DHT11 reading temperature
 and humidity every two seconds, and a 28BYJ-48 stepper the panel can start and stop.
 It is the whole point in one screen: readings flowing out of the board, commands
