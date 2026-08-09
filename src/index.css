@@ -1,0 +1,146 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Typography */
+  --font-sans: "Inter Variable", sans-serif;
+  --font-mono: "JetBrains Mono Variable", monospace;
+  --font-heading: "Inter Variable", sans-serif;
+
+  /* Semantic colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Charts */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Radius */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Sidebar */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/*
+ * NEXORA
+ * Technical Functionalism
+ */
+
+:root {
+  /* Surfaces */
+  --background: #f9f9f8;
+  --foreground: #1a1c1c;
+
+  --card: #ffffff;
+  --card-foreground: #1a1c1c;
+
+  --popover: #ffffff;
+  --popover-foreground: #1a1c1c;
+
+  /* Brand */
+  --primary: #006948;
+  --primary-foreground: #ffffff;
+
+  /* Secondary */
+  --secondary: transparent;
+  --secondary-foreground: #1a1c1c;
+
+  /* Supporting */
+  --muted: #eef1ef;
+  --muted-foreground: #59635e;
+
+  --accent: #e8f2ed;
+  --accent-foreground: #006948;
+
+  --destructive: #ba1a1a;
+
+  /* Technical borders */
+  --border: #6d7a72;
+  --input: #bccac0;
+  --ring: #006948;
+
+  /* Data visualization */
+  --chart-1: #006948;
+  --chart-2: #2f8065;
+  --chart-3: #65a48d;
+  --chart-4: #9ac2b0;
+  --chart-5: #c8ddd4;
+
+  /* Nexora uses restrained rounding */
+  --radius: 0.25rem;
+
+  /* Sidebar */
+  --sidebar: #f2f4f2;
+  --sidebar-foreground: #1a1c1c;
+  --sidebar-primary: #006948;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e8f2ed;
+  --sidebar-accent-foreground: #006948;
+  --sidebar-border: #bccac0;
+  --sidebar-ring: #006948;
+}
+
+/*
+ * Base
+ */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
