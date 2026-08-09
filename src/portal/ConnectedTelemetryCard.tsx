@@ -1,5 +1,5 @@
-import { TelemetryCard } from "@/components/iot"
-import type { TelemetryCardProps } from "@/components/iot"
+import { TelemetryCard } from "../components/iot"
+import type { TelemetryCardProps } from "../components/iot"
 
 import { useTelemetry } from "./useTelemetry"
 

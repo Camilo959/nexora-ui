@@ -1,5 +1,5 @@
-import { ActuatorButton } from "@/components/iot"
-import type { ActuatorButtonProps } from "@/components/iot"
+import { ActuatorButton } from "../components/iot"
+import type { ActuatorButtonProps } from "../components/iot"
 
 import { useActuator } from "./useActuator"
 

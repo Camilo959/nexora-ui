@@ -1,7 +1,7 @@
 import type { ReactNode } from "react"
 
-import { RealtimeChartCard } from "@/components/iot"
-import type { RealtimeChartCardProps } from "@/components/iot"
+import { RealtimeChartCard } from "../components/iot"
+import type { RealtimeChartCardProps } from "../components/iot"
 
 import { useTelemetry } from "./useTelemetry"
 
