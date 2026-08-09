@@ -2,8 +2,10 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@import "@fontsource-variable/inter";
-@import "@fontsource-variable/jetbrains-mono";
+/* Las fuentes las carga el consumidor, no la librería. Empotrarlas aquí metía 400 kB de
+   base64 en la hoja de estilos (Vite inlinea todos los assets en modo librería) para algo
+   que casi cualquier app ya tiene resuelto. Ver el README: basta con instalar
+   @fontsource-variable/inter y jetbrains-mono, o servirlas como prefieras. */
 
 @custom-variant dark (&:is(.dark *));
 

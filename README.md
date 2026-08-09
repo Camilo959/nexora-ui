@@ -80,6 +80,31 @@ application; a degenerate range (`min === max`, NaN bounds) disables the
 slider and blocks application. The APPLY button is disabled while no change
 is pending (`appliedValue` matches the current value).
 
+## Install
+
+```bash
+npm install nexora-ui
+```
+
+`react` and `react-dom` (v19) are peer dependencies — you already have them.
+
+```tsx
+import "nexora-ui/styles.css"              // tokens + utilities, 38 kB (7 kB gzipped)
+import { TelemetryCard } from "nexora-ui"
+```
+
+**Fonts are not bundled.** Shipping them inlined added 400 kB of base64 to the stylesheet
+for something most apps already solve. The design language expects Inter and JetBrains
+Mono — `npm i @fontsource-variable/inter @fontsource-variable/jetbrains-mono` and import
+them, or serve them however you like. Any other pair still works; only the look changes.
+
+Two entry points, so consumers who only want the components never pull in the transport:
+
+| Entry | What you get |
+|---|---|
+| `nexora-ui` | The nine presentation-only components |
+| `nexora-ui/portal` | Provider, hooks and connected wrappers (below) |
+
 ## `nexora-ui/portal` — the optional data layer
 
 The component set above stays presentation-only, forever. `src/portal/` is a **second,

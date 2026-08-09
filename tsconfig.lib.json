@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es2023",
+    "lib": ["ES2023", "DOM"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "verbatimModuleSyntax": true,
+    "paths": { "@/*": ["./src/*"] },
+
+    /* Solo tipos: el JavaScript lo emite Vite. */
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "./dist/types",
+    "rootDir": "./src"
+  },
+  "include": ["src/components", "src/portal", "src/lib"]
+}
