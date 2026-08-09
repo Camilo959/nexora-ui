@@ -48,7 +48,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tsc -p tsconfig.lib.json",
+    "build": "vite build && tsc -p tsconfig.lib.json && node scripts/check-dist.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "prepublishOnly": "npm run build"

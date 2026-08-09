@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 
-import type { ActuatorButtonStatus } from "@/components/iot"
+import type { ActuatorButtonStatus } from "../components/iot"
 
 import { useDeviceChannel } from "./useDeviceChannel"
 

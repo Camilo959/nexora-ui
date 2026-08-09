@@ -1,4 +1,4 @@
-import type { CommandLogEntry } from "@/components/iot"
+import type { CommandLogEntry } from "../components/iot"
 
 import { useDeviceChannel } from "./useDeviceChannel"
 
